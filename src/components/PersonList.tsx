@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Person } from '../types/person';
-import { api } from '../services/api';
+import { personApi } from '../services/api';  // ← Cambiado a personApi
 import PersonItem from './PersonItem';
 import PersonForm from './PersonForm';
 
@@ -18,7 +18,7 @@ const PersonList: React.FC = () => {
   const loadPersons = async () => {
     try {
       setLoading(true);
-      const data = await api.getAll();
+      const data = await personApi.getAll();  // ← Cambiado
       setPersons(data);
       setError(null);
     } catch (err) {
@@ -31,7 +31,7 @@ const PersonList: React.FC = () => {
 
   const handleCreate = async (personData: any) => {
     try {
-      const newPerson = await api.create(personData);
+      const newPerson = await personApi.create(personData);  // ← Cambiado
       setPersons([...persons, newPerson]);
       setShowForm(false);
     } catch (err) {
@@ -44,7 +44,7 @@ const PersonList: React.FC = () => {
     if (!editingPerson) return;
     
     try {
-      const updatedPerson = await api.update(editingPerson.id, personData);
+      const updatedPerson = await personApi.update(editingPerson.id, personData);  // ← Cambiado
       setPersons(persons.map(p => p.id === editingPerson.id ? updatedPerson : p));
       setEditingPerson(null);
     } catch (err) {
@@ -57,7 +57,7 @@ const PersonList: React.FC = () => {
     if (!window.confirm('¿Estás seguro de eliminar esta persona?')) return;
     
     try {
-      await api.delete(id);
+      await personApi.delete(id);  // ← Cambiado
       setPersons(persons.filter(p => p.id !== id));
     } catch (err) {
       alert('Error al eliminar la persona');
